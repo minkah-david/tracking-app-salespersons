@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link, useLocation } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +17,12 @@ import {
   Settings,
   User,
   Menu,
-  X
+  X,
+  Home,
+  Users,
+  DollarSign,
+  Target,
+  Navigation
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -27,6 +33,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
   const isMobile = useIsMobile();
+  const location = useLocation();
   const [notifications, setNotifications] = useState([
     {
       id: 'n1',
@@ -45,6 +52,14 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
     }
   ]);
   
+  const navLinks = [
+    { path: '/', label: 'Dashboard', icon: Home },
+    { path: '/team', label: 'Team', icon: Users },
+    { path: '/sales', label: 'Sales', icon: DollarSign },
+    { path: '/geofencing', label: 'Geofencing', icon: Target },
+    { path: '/routes', label: 'Routes', icon: Navigation },
+  ];
+  
   return (
     <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center px-4">
@@ -59,14 +74,29 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
               <Menu className="h-5 w-5" />
             </Button>
           )}
-          <div className="text-lg font-semibold text-sales-blue">
+          <Link to="/" className="text-lg font-semibold text-sales-blue">
             Field Sales Compass
-          </div>
+          </Link>
         </div>
         
         {!isMobile && (
           <div className="ml-10 flex items-center gap-4">
-            <div className="relative flex items-center">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`flex items-center px-3 py-1.5 text-sm font-medium rounded-md ${
+                  location.pathname === link.path 
+                    ? 'bg-primary/10 text-primary' 
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                }`}
+              >
+                <link.icon className="mr-2 h-4 w-4" />
+                {link.label}
+              </Link>
+            ))}
+            
+            <div className="relative flex items-center ml-4">
               <Search className="absolute left-2.5 h-4 w-4 text-muted-foreground" />
               <Input 
                 placeholder="Search..." 
