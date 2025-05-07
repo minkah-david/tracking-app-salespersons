@@ -15,6 +15,14 @@ import {
   EyeOff 
 } from "lucide-react";
 
+// Define window interface to support Google Maps API
+declare global {
+  interface Window {
+    google: typeof google;
+    initMap: () => void;
+  }
+}
+
 const API_KEY = "AIzaSyB5XVbCfPD6cV8NZnuZVohQID0pMH-tUvk";
 
 interface MapProps {
@@ -39,6 +47,7 @@ const Map: React.FC<MapProps> = ({
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
   const [circles, setCircles] = useState<google.maps.Circle[]>([]);
   const [polylines, setPolylines] = useState<google.maps.Polyline[]>([]);
+  const [waypointMarkers, setWaypointMarkers] = useState<google.maps.Marker[]>([]);
   
   const [showGeofences, setShowGeofences] = useState(true);
   const [showRoutes, setShowRoutes] = useState(true);
@@ -225,9 +234,12 @@ const Map: React.FC<MapProps> = ({
   useEffect(() => {
     if (!mapInstance || !showRoutes || !isMapLoaded) return;
 
-    // Clear previous polylines
+    // Clear previous polylines and waypoint markers
     polylines.forEach(polyline => polyline.setMap(null));
+    waypointMarkers.forEach(marker => marker.setMap(null));
+    
     const newPolylines: google.maps.Polyline[] = [];
+    const newWaypointMarkers: google.maps.Marker[] = [];
 
     routes.forEach(route => {
       // Only show route for active salesperson if one is selected
@@ -289,16 +301,18 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Add to markers to be cleaned up
-        newMarkers.push(waypointMarker);
+        newWaypointMarkers.push(waypointMarker);
       });
 
       newPolylines.push(polyline);
     });
 
     setPolylines(newPolylines);
+    setWaypointMarkers(newWaypointMarkers);
 
     return () => {
       newPolylines.forEach(polyline => polyline.setMap(null));
+      newWaypointMarkers.forEach(marker => marker.setMap(null));
     };
   }, [mapInstance, activeSalesperson, showRoutes, isMapLoaded]);
 
