@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import Team from "./pages/Team";
 import Sales from "./pages/Sales";
 import Geofencing from "./pages/Geofencing";
-import RoutesPage from "./pages/Routes";
+import Routes from "./pages/Routes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +24,7 @@ const App = () => (
           <Route path="/team" element={<Team />} />
           <Route path="/sales" element={<Sales />} />
           <Route path="/geofencing" element={<Geofencing />} />
-          <Route path="/routes" element={<RoutesPage />} />
+          <Route path="/routes" element={<Routes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
