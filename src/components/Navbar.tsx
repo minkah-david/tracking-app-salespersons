@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, Bell, QrCode } from 'lucide-react';
+import { Menu, Bell, QrCode, DollarSign } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface NavbarProps {
@@ -31,6 +31,9 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
           </Link>
           <Link to="/qr-management" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
             QR Management
+          </Link>
+          <Link to="/sales-process" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            Sales Process
           </Link>
         </nav>
         

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5QrCode } from 'html5-qrcode';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface QRScannerProps {
   onScanSuccess?: (coconutId: string, scanData: any) => void;
-  mode?: 'inventory' | 'sales';
+  mode?: 'inventory' | 'sales' | 'returns';
 }
 
 const QRScanner: React.FC<QRScannerProps> = ({ 
@@ -18,7 +18,7 @@ const QRScanner: React.FC<QRScannerProps> = ({
 }) => {
   const [scanning, setScanning] = useState(false);
   const [scanResult, setScanResult] = useState<string | null>(null);
-  const [scannerInstance, setScannerInstance] = useState<Html5Qrcode | null>(null);
+  const [scannerInstance, setScannerInstance] = useState<Html5QrCode | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   
@@ -41,7 +41,7 @@ const QRScanner: React.FC<QRScannerProps> = ({
     setScanResult(null);
     
     try {
-      const html5QrCode = new Html5Qrcode(scannerContainerId);
+      const html5QrCode = new Html5QrCode(scannerContainerId);
       setScannerInstance(html5QrCode);
       
       html5QrCode.start(
@@ -94,8 +94,20 @@ const QRScanner: React.FC<QRScannerProps> = ({
                     });
                   }
                   
+                  let toastMessage = "";
+                  switch(mode) {
+                    case 'inventory':
+                      toastMessage = "Coconut added to inventory";
+                      break;
+                    case 'returns':
+                      toastMessage = "Coconut marked as returned/spoilt";
+                      break;
+                    default:
+                      toastMessage = "Sale recorded";
+                  }
+                  
                   toast({
-                    title: mode === 'inventory' ? "Coconut added to inventory" : "Sale recorded",
+                    title: toastMessage,
                     description: `Coconut ID: ${qrData.coconutId}`,
                   });
                 },
@@ -110,8 +122,20 @@ const QRScanner: React.FC<QRScannerProps> = ({
                     });
                   }
                   
+                  let toastMessage = "";
+                  switch(mode) {
+                    case 'inventory':
+                      toastMessage = "Coconut added to inventory";
+                      break;
+                    case 'returns':
+                      toastMessage = "Coconut marked as returned/spoilt";
+                      break;
+                    default:
+                      toastMessage = "Sale recorded";
+                  }
+                  
                   toast({
-                    title: mode === 'inventory' ? "Coconut added to inventory" : "Sale recorded",
+                    title: toastMessage,
                     description: `Coconut ID: ${qrData.coconutId} (without location)`,
                     variant: "default"
                   });
@@ -166,12 +190,14 @@ const QRScanner: React.FC<QRScannerProps> = ({
       <CardHeader>
         <CardTitle className="flex items-center">
           <Scan className="mr-2 h-5 w-5 text-sales-blue" />
-          {mode === 'inventory' ? 'Scan Inventory' : 'Scan Sale'}
+          {mode === 'inventory' ? 'Scan Inventory' : mode === 'returns' ? 'Scan Returns' : 'Scan Sale'}
         </CardTitle>
         <CardDescription>
           {mode === 'inventory' 
             ? 'Scan coconut QR codes to add to your inventory' 
-            : 'Scan coconut QR codes when making a sale'}
+            : mode === 'returns'
+              ? 'Scan coconut QR codes for returns or spoilage'
+              : 'Scan coconut QR codes when making a sale'}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -226,7 +252,9 @@ const QRScanner: React.FC<QRScannerProps> = ({
           <p>
             {mode === 'inventory' 
               ? 'Scan each coconut before leaving the depot' 
-              : 'Scan coconut QR code after completing a sale'}
+              : mode === 'returns'
+                ? 'Scan coconuts that are being returned or marked as spoilt'
+                : 'Scan coconut QR code after completing a sale'}
           </p>
         </div>
       </CardContent>

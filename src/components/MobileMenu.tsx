@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Users, Map, DollarSign, BarChart, QrCode } from 'lucide-react';
+import { X, Users, Map, DollarSign, BarChart, QrCode, CreditCard } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -51,6 +51,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               >
                 <QrCode className="h-5 w-5 mr-3 text-sales-blue" />
                 QR Management
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/sales-process" 
+                onClick={onClose}
+                className="flex items-center px-4 py-3 hover:bg-accent rounded-md"
+              >
+                <CreditCard className="h-5 w-5 mr-3 text-sales-blue" />
+                Sales Process
               </Link>
             </li>
           </ul>

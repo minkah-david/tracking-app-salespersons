@@ -7,6 +7,7 @@ import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Sales from "./pages/Sales";
 import QRCodeManagement from "./pages/QRCodeManagement";
+import SalesProcess from "./pages/SalesProcess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/sales" element={<Sales />} />
           <Route path="/qr-management" element={<QRCodeManagement />} />
+          <Route path="/sales-process" element={<SalesProcess />} />
           <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </BrowserRouter>
