@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Sale } from "@/data/sampleData";
 import { salespeople } from "@/data/sampleData";
 import { 
