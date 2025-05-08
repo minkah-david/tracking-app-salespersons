@@ -1,16 +1,7 @@
 
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import {
-  Navigation,
-  MapPin,
-  Home,
-  Users,
-  BarChart4,
-  Target,
-  Settings,
-  X
-} from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { X, Users, Map, DollarSign, BarChart, QrCode } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -18,41 +9,62 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
-  const menuItems = [
-    { icon: Home, label: "Dashboard", active: true },
-    { icon: Users, label: "Salespeople", active: false },
-    { icon: MapPin, label: "Map View", active: false },
-    { icon: Navigation, label: "Routes", active: false },
-    { icon: Target, label: "Geofencing", active: false },
-    { icon: BarChart4, label: "Analytics", active: false },
-    { icon: Settings, label: "Settings", active: false },
-  ];
+  if (!isOpen) return null;
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-[250px] sm:w-[300px] p-0">
-        <SheetHeader className="border-b p-4 flex flex-row justify-between items-center">
-          <SheetTitle className="text-lg text-left">Field Sales Compass</SheetTitle>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-5 w-5" />
-          </Button>
-        </SheetHeader>
-        <div className="py-4">
-          <div className="space-y-1 px-2">
-            {menuItems.map((item, index) => (
-              <Button
-                key={index}
-                variant={item.active ? "secondary" : "ghost"}
-                className={`w-full justify-start ${item.active ? 'bg-sales-blue/10 text-sales-blue hover:bg-sales-blue/20' : ''}`}
+    <div className="fixed inset-0 bg-background z-50">
+      <div className="flex flex-col h-full">
+        <div className="flex items-center justify-between p-4 border-b">
+          <div className="font-semibold text-lg">CocoReeno</div>
+          <button onClick={onClose} className="p-2">
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+        
+        <nav className="flex-1 py-4">
+          <ul className="space-y-2 px-4">
+            <li>
+              <Link 
+                to="/" 
+                onClick={onClose}
+                className="flex items-center px-4 py-3 hover:bg-accent rounded-md"
               >
-                <item.icon className="mr-2 h-4 w-4" />
-                {item.label}
-              </Button>
-            ))}
+                <Map className="h-5 w-5 mr-3 text-sales-blue" />
+                Tracking Map
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/sales" 
+                onClick={onClose}
+                className="flex items-center px-4 py-3 hover:bg-accent rounded-md"
+              >
+                <DollarSign className="h-5 w-5 mr-3 text-sales-blue" />
+                Sales Analytics
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/qr-management" 
+                onClick={onClose}
+                className="flex items-center px-4 py-3 hover:bg-accent rounded-md"
+              >
+                <QrCode className="h-5 w-5 mr-3 text-sales-blue" />
+                QR Management
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        
+        <div className="p-4 border-t">
+          <div className="text-sm text-muted-foreground">
+            CocoReeno Tracking System
+            <br />
+            Version 1.0
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </div>
   );
 };
 
